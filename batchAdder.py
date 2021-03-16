@@ -118,7 +118,7 @@ with open('manpower.csv') as file:
             school_field.select_by_visible_text('Tooele Technical College')
         elif 'MATC' in school:
             school_field.select_by_visible_text('Mountainland Technical College')
-        elif 'OWTC' in school or 'Ogden' in school or 'OgdenTech' in school:
+        elif 'OWTC' in school or 'Ogden' in school or 'OgdenTech' in school or 'OWATC' in school:
             school_field.select_by_visible_text('Ogden-Weber Technical College')
         elif 'David' in school or 'DATC' in school or 'DATA' in school:
             school_field.select_by_visible_text('Davis Technical College')
