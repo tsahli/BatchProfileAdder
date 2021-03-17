@@ -6,6 +6,44 @@ import csv
 import re
 import passwords
 
+def getPostion(employee_number, school):
+    if '1A' in school or '1B' in school:
+        print(employee_number + ' School:' + school + ' Will Be set to: 1st Yr')
+        position_field.select_by_visible_text('1st Year Apprentice')
+    elif '2A' in school or '2B' in school:
+        print(employee_number + ' School:' + school + ' Will Be set to: 2nd Yr')
+        position_field.select_by_visible_text('2nd Year Apprentice')
+    elif '3A' in school or '3B' in school:
+        print(employee_number + ' School:' + school + ' Will Be set to: 3rd Yr')
+        position_field.select_by_visible_text('3rd Year Apprentice')
+    elif '4A' in school or '4B' in school:
+        print(employee_number + ' School:' + school + ' Will Be set to: 4th Yr')
+        position_field.select_by_visible_text('4th Year Apprentice')
+    else:
+        print(employee_number + ' School:' + school + ' Hit the else, will be set to 4th Yr')
+        position_field.select_by_visible_text('4th Year Apprentice')
+
+    # try:
+    #     split_school = school.split('-')
+    #     year_in_school = split_school[0]
+    #     semester = split_school[2]
+    #     if '1' in year_in_school and '2021' in semester:
+    #         print('School: ' + school + ' Will Be set to: 1st Yr')
+    #         position_field.select_by_visible_text('1st Year Apprentice')
+    #     elif '2' in year_in_school and '2021' in semester:
+    #         print('School: ' + school + ' Will Be set to: 2nd Yr')
+    #         position_field.select_by_visible_text('2nd Year Apprentice')
+    #     elif '3' in year_in_school and '2021' in semester:
+    #         print('School: ' + school + ' Will Be set to: 3rd Yr')
+    #         position_field.select_by_visible_text('3rd Year Apprentice')
+    #     elif '4' in year_in_school and '2021' in semester:
+    #         print('School: ' + school + ' Will Be set to: 4th Yr')
+    #         position_field.select_by_visible_text('4th Year Apprentice')
+    # except:
+    #     if school == '':
+    #         print('School: ' + school + ' Will be set to: 4th Yr')
+    #         position_field.select_by_visible_text('4th Year Apprentice')
+
 desktop = os.path.join(os.path.join(os.path.expanduser('~'), 'Desktop'))
 driver = webdriver.Firefox(executable_path=desktop + '\\geckodriver.exe')
 username = passwords.username
@@ -109,7 +147,7 @@ with open('manpower.csv') as file:
         if electrical_license_level == 'Journeyman' or electrical_license_level == 'Master':
             position_field.select_by_visible_text('Journeyman')
         else:
-            position_field.select_by_visible_text('1st Year Apprentice')
+            getPostion(employee_number, school)
         if 'SLCC' in school:
             school_field.select_by_visible_text('Salt Lake Community College')
         elif 'IEC' in school:
@@ -122,7 +160,3 @@ with open('manpower.csv') as file:
             school_field.select_by_visible_text('Ogden-Weber Technical College')
         elif 'David' in school or 'DATC' in school or 'DATA' in school:
             school_field.select_by_visible_text('Davis Technical College')
-
-
-
-
