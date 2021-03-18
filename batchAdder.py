@@ -6,43 +6,35 @@ import csv
 import re
 import passwords
 
-def getPostion(employee_number, school):
+global file_name_list
+file_name_list = []
+f = open('issues.txt', 'a')
+
+for file in os.listdir('images'):
+    file_name_list.append(file)
+
+def find_picture(full_name):
+    full_name_bmp = full_name + '.bmp'
+    full_name_jpg = full_name + '.jpg'
+    if full_name_bmp in file_name_list:
+        return "\\images\\" + full_name + '.bmp'
+    elif full_name_jpg in file_name_list:
+        return "\\images\\" + full_name + '.jpg'
+    else:
+        return None
+
+def get_postion(employee_number, school):
     if '1A' in school or '1B' in school:
-        print(employee_number + ' School:' + school + ' Will Be set to: 1st Yr')
         position_field.select_by_visible_text('1st Year Apprentice')
     elif '2A' in school or '2B' in school:
-        print(employee_number + ' School:' + school + ' Will Be set to: 2nd Yr')
         position_field.select_by_visible_text('2nd Year Apprentice')
     elif '3A' in school or '3B' in school:
-        print(employee_number + ' School:' + school + ' Will Be set to: 3rd Yr')
         position_field.select_by_visible_text('3rd Year Apprentice')
     elif '4A' in school or '4B' in school:
-        print(employee_number + ' School:' + school + ' Will Be set to: 4th Yr')
         position_field.select_by_visible_text('4th Year Apprentice')
     else:
-        print(employee_number + ' School:' + school + ' Hit the else, will be set to 4th Yr')
+        f.write(employee_number + " " + school + " // Hit else, set to 4th yr")
         position_field.select_by_visible_text('4th Year Apprentice')
-
-    # try:
-    #     split_school = school.split('-')
-    #     year_in_school = split_school[0]
-    #     semester = split_school[2]
-    #     if '1' in year_in_school and '2021' in semester:
-    #         print('School: ' + school + ' Will Be set to: 1st Yr')
-    #         position_field.select_by_visible_text('1st Year Apprentice')
-    #     elif '2' in year_in_school and '2021' in semester:
-    #         print('School: ' + school + ' Will Be set to: 2nd Yr')
-    #         position_field.select_by_visible_text('2nd Year Apprentice')
-    #     elif '3' in year_in_school and '2021' in semester:
-    #         print('School: ' + school + ' Will Be set to: 3rd Yr')
-    #         position_field.select_by_visible_text('3rd Year Apprentice')
-    #     elif '4' in year_in_school and '2021' in semester:
-    #         print('School: ' + school + ' Will Be set to: 4th Yr')
-    #         position_field.select_by_visible_text('4th Year Apprentice')
-    # except:
-    #     if school == '':
-    #         print('School: ' + school + ' Will be set to: 4th Yr')
-    #         position_field.select_by_visible_text('4th Year Apprentice')
 
 desktop = os.path.join(os.path.join(os.path.expanduser('~'), 'Desktop'))
 driver = webdriver.Firefox(executable_path=desktop + '\\geckodriver.exe')
@@ -113,6 +105,7 @@ with open('manpower.csv') as file:
         position_field = Select(driver.find_element_by_id('id_position'))
         school_field = Select(driver.find_element_by_id('id_school'))
         assigned_job_field = Select(driver.find_element_by_id('id_assigned_job'))
+        profile_picture_field = driver.find_element_by_id('id_picture_path')
         create_button = driver.find_element_by_xpath('/html/body/div/div/div/form/div/div/input')
 
         password_field.send_keys(passwords.profile_password)
@@ -147,7 +140,7 @@ with open('manpower.csv') as file:
         if electrical_license_level == 'Journeyman' or electrical_license_level == 'Master':
             position_field.select_by_visible_text('Journeyman')
         else:
-            getPostion(employee_number, school)
+            get_postion(employee_number, school)
         if 'SLCC' in school:
             school_field.select_by_visible_text('Salt Lake Community College')
         elif 'IEC' in school:
@@ -160,3 +153,8 @@ with open('manpower.csv') as file:
             school_field.select_by_visible_text('Ogden-Weber Technical College')
         elif 'David' in school or 'DATC' in school or 'DATA' in school:
             school_field.select_by_visible_text('Davis Technical College')
+        picture_path = find_picture(first_name + ' ' + last_name)
+        if picture_path != None:
+            profile_picture_field.send_keys(os.getcwd() + picture_path)
+
+f.close()

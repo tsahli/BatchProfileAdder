@@ -1,5 +1,7 @@
 passwords.py
 *.csv
 *.log
+*.txt
 *.vscode
 __pycache__/
+images/
