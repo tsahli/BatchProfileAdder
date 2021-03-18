@@ -33,7 +33,7 @@ def get_postion(employee_number, school):
     elif '4A' in school or '4B' in school:
         position_field.select_by_visible_text('4th Year Apprentice')
     else:
-        f.write(employee_number + " " + school + " // Hit else, set to 4th yr")
+        f.write(employee_number + " " + school + " // Hit else, set to 4th yr\n")
         position_field.select_by_visible_text('4th Year Apprentice')
 
 desktop = os.path.join(os.path.join(os.path.expanduser('~'), 'Desktop'))
@@ -124,7 +124,10 @@ with open('manpower.csv') as file:
             zip_code_field.send_keys(zip_split[0])
         else:
             zip_code_field.send_keys(zip_code)
-        email_address_field.send_keys(email)
+        if email != "":
+            email_address_field.send_keys(email)
+        else:
+            f.write(employee_number + " No email address was found.\n")
         phone_number_field.send_keys(re.sub("[^0-9]", "", phone))
         if spouse == 'Single' or spouse == 'Divorced':
             pass
@@ -156,5 +159,10 @@ with open('manpower.csv') as file:
         picture_path = find_picture(first_name + ' ' + last_name)
         if picture_path != None:
             profile_picture_field.send_keys(os.getcwd() + picture_path)
+        else:
+            f.write(employee_number + " No picture was found.\n")
+        if first_name + " " + last_name != "Taylor Sahli":
+            driver.find_element_by_xpath('/html/body/div/div/div/form/div/div/input').click()
+            driver.implicitly_wait(10)
 
 f.close()
